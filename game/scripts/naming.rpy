@@ -1,3 +1,9 @@
+init python:
+    import os
+    import time
+    import string
+    import unicodedata
+
 label naming_start:
     
     scene black with fade
@@ -18,7 +24,21 @@ label naming_start:
     qqq "抱歉，{w=0.25}我早该在这之前准备好文案的，{w=0.25}我总是这样。"
     qqq "算了，{w=0.25}既然如此，{w=0.5}不妨先取个名字？"
 
-    "↓试着给自己想个名字？{w=2.5}{nw}"
+    # "↓试着给自己想个名字？{w=2.5}{nw}"
+    python:
+        start_time = time.time()
+    default player_input = ""
+    call screen volatile_input_screen("↓试着给自己想个名字？", 1)
+    $ entered = _return
+    python:
+        delta_time = time.time() - start_time
+
+    # 否则，如果输入名字所花费的时间短于一秒：
+    if entered == "Entered":
+        $ name_mc = player_input
+        qqq "哇，{w=0.25}你的速度可真快，只用了[delta_time:.3f]秒就{...}\n{...}你大概只是乱敲了下键盘吧，{w=0.25}我猜。"
+        qqq "也许你是个速通玩家，{w=0.5}谁知道呢？\n{w=1.0}我反正不明白为什么一个galgame也会有人尝试速通。"
+        jump naming_entered
 
     qqq "——啊，{w=0.25}不好意思，{w=0.5}我得提醒你一下。"
     qqq "尽管这个游戏理论上是完全离线的，{w=0.5}但是——"
@@ -40,16 +60,11 @@ label naming_start:
 
 
 label naming_loop:
-
     "↓试着给自己想个名字？{nw}"
     python:
-        import time, string, unicodedata, os
-
-        start_time = time.time()
         name_mc = renpy.input(_("↓试着给自己想个名字？")).strip()
-        end_time = time.time()
-        delta_time = end_time - start_time
 
+label naming_entered:
     python:
         currentuser = ""
         for name in ("LOGNAME", "USER", "LNAME", "USERNAME"):
@@ -73,12 +88,6 @@ label naming_loop:
             qqq "{......}看来，{w=0.5}你不是很想起名字？\n{w=1.0}但是没有名字也不是很方便呢，{w=0.5}那我就给你取名叫“[default_name_mc]”得了。"
             $ name_mc = default_name_mc
             jump naming_done
-    
-    # 否则，如果输入名字所花费的时间短于一秒：
-    elif delta_time < 1:
-        qqq "哇，{w=0.25}你的速度可真快，只用了[delta_time:.3f]秒就{...}\n{...}你大概只是乱敲了下键盘吧，{w=0.25}我猜。"
-        qqq "也许你是个速通玩家，{w=0.5}谁知道呢？\n{w=1.0}我反正不明白为什么一个galgame也会有人尝试速通。"
-        jump naming_done
     
     # 否则，如果输入的名字是administrator等管理员用户名，或当前系统用户名：
     elif name_mc.lower() in ("admin", "administrator", "system", "root", "wheel") or name_mc == currentuser:
