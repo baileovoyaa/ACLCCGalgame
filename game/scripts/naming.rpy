@@ -1,16 +1,16 @@
-label naming:
+label naming_start:
     
     scene black with fade
-
+    
     # 如果已经选择了一个名字：
     if persistent.name_mc:
         $ name_mc = persistent.name_mc
         qqq "{......}噢，{w=0.25}又见面了，{w=0.25}[name_mc]。"
         qqq "我想，{w=0.25}我们应该没必要再给你重新想个名字了吧？"
-        qqq "那就让我们进入剧情吧。\n{w=1.0}呃，如果我没记错的话，剧情应该是被我放在{...}"
+        qqq "那我们就进入剧情吧。\n{w=1.0}呃，如果我没记错的话，剧情应该是被我放在{......}{nw}"
         return
     
-    qqq "{......}噢，{w=0.25}嘿，{w=0.5}你好。"
+    qqq "{......}噢，{w=0.25}嘿，{w=0.25}你好。"
     qqq "我想，{w=0.25}你应该就是玩家了。"
     qqq "首先，{w=0.5}感谢你愿意游玩我们的作品。"
     # yangsy "谁家 B-X 感谢你玩我们的游戏（"
@@ -35,6 +35,7 @@ label naming:
     qqq "非常感谢你的配合。"
     qqq "咳咳，{w=0.25}扯远了。"
 
+    $ empty_name_attempts = 0
     jump naming_loop
 
 
@@ -58,8 +59,20 @@ label naming_loop:
     
     # 如果输入的名字为空：
     if not name_mc:
-        yangsy "诶等会输入的名字为空这种情况竟然没剧情的吗（"
-        jump naming_loop
+        $ empty_name_attempts += 1
+    
+        if empty_name_attempts == 1:
+            qqq "你刚刚是不是{...}不小心把取名环节给跳过去了？\n{w=1.0}问题不大，{w=0.5}我们再来一次。"
+            jump naming_loop
+
+        elif empty_name_attempts == 2:
+            qqq "{...}是我的问题，{w=0.5}还是说你好像又一次什么名字都没有输入？"
+            jump naming_loop
+            
+        else:
+            qqq "{......}看来，{w=0.5}你不是很想起名字？\n{w=1.0}但是没有名字也不是很方便呢，{w=0.5}那我就给你取名叫“[default_name_mc]”得了。"
+            $ name_mc = default_name_mc
+            jump naming_done
     
     # 否则，如果输入名字所花费的时间短于一秒：
     elif delta_time < 1:
@@ -74,18 +87,18 @@ label naming_loop:
         # yangsy "有的兄弟有的（"
         qqq "你是觉得这样做就能获得什么“{green}管理员权限{/green}”之类的吗？"
         qqq "谁知道呢，{w=0.5}说不定某次更新之后作者就会为这个加点什么？"
-        jump naming_done
+        jump naming_confirm
     
     # 否则，如果输入的名字是qwq/awa等：
     elif name_mc.lower() in ("qwq", "awa", "uwu", "xwx"):
         qqq "[name_mc]"
-        jump naming_done
+        jump naming_confirm
     
     # 否则，如果输入的名字含有特殊符号（通过检查Unicode字符分类判断）：
     elif any(unicodedata.category(c) in ("So", "Zl", "Zp", "Cc", "Cf", "Cs", "Co", "Cn") for c in name_mc):
         qqq "虽然说输入框能支持，{w=0.25}但是{...}\n{...}你取个这样的名字，{w=0.5}我该怎么念呢？"
         qqq "难道说你在聊天框里塞了颜文字？{w=1.0}我的程序检测不出来。"
-        jump naming_done
+        jump naming_confirm
 
     # 否则，如果输入的名字长度大于20个字符：
     elif len(name_mc) > 20:
@@ -95,44 +108,46 @@ label naming_loop:
     # 否则，如果输入的名字长度小于3字节：
     elif len(bytes(name_mc, encoding="utf-8")) < 3:
         qqq "看的出来，{w=0.5}你并不擅长取名字。"
-        jump naming_done
+        jump naming_confirm
     
     # 否则，如果输入的名字是纯数字：
     elif all(c in string.digits for c in name_mc):
         qqq "纯数字吗，{w=0.5}真是无趣，{w=0.5}像是系统分配的一样。"
-        jump naming_done
+        jump naming_confirm
     
     # 否则，如果输入的名字是纯英文字符（A-Z, a-z, 0-9）：
     elif all(c in string.digits + string.ascii_letters for c in name_mc):
         qqq "英文字符，{w=0.5}很聪明的选择。"
         qqq "虽然输入框可以支持中文，{w=0.5}但是纯英文的兼容性往往更好。\n{w=1.0}看来你对这方面的知识的确有一点了解。"
-        jump naming_done
+        jump naming_confirm
     
     # 否则（以上条件均没能满足）：
     else:
         yangsy "（此处应为[name_qqq]对玩家所取的名称（[name_mc]）的默认评价）"
-        jump naming_done
+        jump naming_confirm
 
 
 
-label naming_done:
+label naming_confirm:
 
     "确定要使用这个名字吗？{nw}"
     $ _history_list.pop()
     menu:
         "确定要使用这个名字吗？{fast}"
         "当然。": 
-            $ persistent.name_mc = name_mc
+            qqq "好的，[name_mc]，{w=0.25}看来你已经想好自己叫什么了。"
+            jump naming_done
         "我再想想......": 
             qqq "好吧，那就重新{......}{nw}"
             jump naming_loop
     
-    qqq "好的，[name_mc]，{w=0.25}看来你想好自己叫什么了。"
+label naming_done:
+
+    $ persistent.name_mc = name_mc
     qqq "不过我还是叫你玩家吧，{w=0.5}我还是习惯这么叫你。"
     qqq "——啊，{w=0.25}好奇我的名字吗，{w=0.5}我想这并不重要。"
     qqq "稍等一下，{w=0.5}我得找找剧情被我放在哪了{......}{nw}"
     
-    scene black with fade
     return
 
 
@@ -145,7 +160,6 @@ label ut_naming:
     else:
         call ut_naming_loop
     
-    scene black with fade
     return
 
 
