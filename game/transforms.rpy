@@ -297,29 +297,3 @@ transform r22:
     rightin(1320)
 transform r11:
     rightin(960)
-
-# 以下变换用于单独设置每个角色的 缩放 和 Y轴锚点。
-
-transform tcbaile:
-    yanchor 0.5 subpixel True
-    zoom 1.0
-
-transform tcgra:
-    yanchor 0.625 subpixel True
-    zoom 0.75
-
-transform tclingyun:
-    yanchor 0.5 subpixel True
-    zoom 0.75
-
-transform tcmorin:
-    yanchor 0.5 subpixel True
-    zoom 1.125
-
-transform tcmwam:
-    yanchor 0.5 subpixel True
-    zoom 0.75
-
-transform tcyangsy:
-    yanchor 0.65625 subpixel True
-    zoom 2.5 nearest True

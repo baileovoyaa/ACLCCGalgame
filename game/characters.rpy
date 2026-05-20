@@ -24,6 +24,10 @@ define realname_baile = "李星眠"
 default name_baile = nickname_baile
 define character.baile = DynamicCharacter("name_baile", image="baile", what_prefix="", what_suffix="")
 
+transform tcbaile:
+    yanchor 0.5 subpixel True
+    zoom 1.0
+
 # image side baile = "char/baile/avatar.jpg"
 image baile = At("char/baile/happy.png", tcbaile)
 image baile admiration = At("char/baile/admiration.png", tcbaile)
@@ -58,6 +62,10 @@ define realname_gra = "晴安柚子"
 default name_gra = nickname_gra
 define character.gra = DynamicCharacter("name_gra", image="gra", what_prefix="< ", what_suffix=" 3")
 
+transform tcgra:
+    yanchor 0.625 subpixel True
+    zoom 0.75
+
 # image side gra = "char/gra/avatar.jpg"
 image gra = At("char/gra/normal.png", tcgra)
 image gra flirt = At("char/gra/flirt.png", tcgra)
@@ -80,6 +88,9 @@ define character.lamb = DynamicCharacter("name_lamb", image="lamb", what_prefix=
 # image side lamb = "char/lamb/avatar.jpg"
 # image lamb = "char/lamb/normal.png"
 
+transform tclingyun:
+    yanchor 0.5 subpixel True
+    zoom 0.75
 
 define nickname_lingyun = "飞雨凌云"
 define realname_lingyun = "凌云"
@@ -107,6 +118,9 @@ define character.maoyuna = DynamicCharacter("name_maoyuna", image="maoyuna", wha
 # image side maoyuna = "char/maoyuna/avatar.jpg"
 # image maoyuna = "char/maoyuna/normal.png"
 
+transform tcmorin:
+    yanchor 0.5 subpixel True
+    zoom 1.125
 
 define nickname_morin = "莫邪Morin"
 define realname_morin = "莫邪"
@@ -121,6 +135,10 @@ define nickname_mwam = "ms_win_and_mc"
 define realname_mwam = "李婉清"
 default name_mwam = nickname_mwam
 define character.mwam = DynamicCharacter("name_mwam", image="mwam", what_prefix="", what_suffix="")
+
+transform tcmwam:
+    yanchor 0.5 subpixel True
+    zoom 0.75
 
 # image side mwam = "char/mwam/avatar.jpg"
 image mwam = At("char/mwam/normal.png", tcmwam)
@@ -161,6 +179,10 @@ define nickname_yangsy = "Yangsy56302"
 define realname_yangsy = "杨曦"
 default name_yangsy = nickname_yangsy
 define character.yangsy = DynamicCharacter("name_yangsy", image="yangsy", what_prefix="\" ", what_suffix=" \"")
+
+transform tcyangsy:
+    yanchor 0.65625 subpixel True
+    zoom 2.5 nearest True
 
 # image side yangsy = "char/yangsy/avatar.jpg"
 image yangsy = At(Composite((200, 500), (0, 0), "char/yangsy/body.png", (0, 0), "char/yangsy/bow_happy.png", (0, 0), "char/yangsy/eye_tareme.png", (0, 0), "char/yangsy/mouth_cat.png"), tcyangsy)
