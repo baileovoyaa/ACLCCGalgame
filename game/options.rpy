@@ -30,13 +30,13 @@ define config.version = "a0"
 ## triple-quotes, and leave a blank line between paragraphs.
 
 define gui.about = _p("""\
-ADOFAI Cursed Levels (CN) Community\
+ADOFAI Cursed Levels (CN) Community
 
-剧情：祐荽，晴柚-Grafrustix，ms_win_and_mc，Yangsy56302
+剧情: 祐荽, 晴柚-Grafrustix, ms_win_and_mc, Yangsy56302
 
-程序：Yangsy56302，ms_win_and_mc
+程序: Yangsy56302, ms_win_and_mc, myworldzycpc
 
-立绘：{a=https://www.doubao.com/}豆包{/a}
+立绘: {a=https://www.doubao.com/}豆包{/a}
 """)
 
 
