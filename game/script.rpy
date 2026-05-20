@@ -1,5 +1,7 @@
 ﻿# The game starts here.
 label start:
+    stop music
+
     call guide_naming_start from _call_guide_naming_start
     $ renpy.block_rollback()
     call ch0 from _call_ch0
